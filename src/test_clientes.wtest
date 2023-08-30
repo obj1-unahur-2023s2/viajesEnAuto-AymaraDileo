@@ -1,5 +1,6 @@
 import clientes.*
 import remisera.*
+import oficina.*
 
 describe "Testing de AnaMaria " {
 	
@@ -125,4 +126,111 @@ describe "Test de Lucia"{
 	  	lucia.estaReemplazando(roxana)
 	  	assert.equals(180,lucia.cobrarPorKm(ludmila,10))
 	  }
+	  
+	  test "puede reemplazar a Mariela llevando a Melina que trabaja para Ludmila haciendo 1 km"
+	  
+	    lucia.estaReemplazando(mariela)
+	    melina.trabajaPara(ludmila)
+	    assert.equals(50,lucia.cobrarPorKm(melina,1))
+	     
 }
+
+describe "Test de Ludmila"{
+	
+	  test "el precio del l kilometro son 18 pesos"{
+	  	assert.equals(18,ludmila.precioDelKm())
+	  }
+}
+
+describe "Testing de Melina"{
+	
+	  test "Melina no puede trabajar para si misma"{
+	  	
+	  assert.throwsExceptionWithMessage(
+	  	"No puede trabajar para si misma",
+	  	 {melina.trabajaPara(melina)}
+	  )
+	  	
+	  }
+	  
+	  test "Melina puede trabajar para otros"{
+	  	
+	  	assert.doesNotThrowException(
+	  		{melina.trabajaPara(ludmila)}
+	  	)
+	  }
+	
+	  test "precio si trabaja para Melina"{
+	  
+	    melina.trabajaPara(ludmila)
+	    assert.equals(15, melina.precioDelKm())
+	  }
+	  
+	  test "precio si trabaja para Ana Maria"{
+	  
+	    melina.trabajaPara(anaMaria)
+	    assert.equals(27, melina.precioDelKm())
+	    anaMaria.cambiarSituacionEconom()
+	    assert.equals(22,melina.precioDelKm())
+	  }
+	  
+	  test "precio si trabaja para Teresa"{
+	  
+	    melina.trabajaPara(teresa)
+	    assert.equals(19, melina.precioDelKm())
+	    teresa.precioDelKm(32)
+	    assert.equals(29, melina.precioDelKm())
+	  }
+	  
+}
+
+describe " Testing de oficina"{
+	
+	  test "Elije a juana como remisera llevando a ana maria en 10km"{
+	  	
+	  	oficina.asignarRemiseras(roxana,juana)
+	  	assert.equals(juana,oficina.remiseraElegidaParaViaje(anaMaria, 10))
+	  	
+	  }
+	  
+	   test "Elije a roxana como remisera llevando a ana teresa en 10km"{
+	  	
+	  	oficina.asignarRemiseras(roxana,juana)
+	  	assert.equals(roxana,oficina.remiseraElegidaParaViaje(teresa, 10))
+	  	
+	  }
+	  
+	  test "Elije a roxana como remisera llevando a ana teresa en 4km"{
+	  	
+	  	oficina.asignarRemiseras(roxana,juana)
+	  	assert.equals(roxana,oficina.remiseraElegidaParaViaje(teresa, 4))
+	  	
+	  }
+	  
+	  test "No se puede elegir a la misma remisera"{
+	  	
+	  	oficina.asignarRemiseras(roxana,juana)
+	  	assert.throwsExceptionWithMessage("Ya esta asignada la remisera", {
+	  		oficina.cambiarPrimerRemiseraPor(roxana)}
+	  	assert.throwsExceptionWithMessage("Ya esta asignada la remisera", {
+	  		oficina.cambiarSegundaRemiseraPor(juana)}
+	  }
+	  
+	  
+	  test "Se puede elegir una remisera diferente en cada opcion"{
+	  	oficina.asignarRemiseras(roxana,juana)
+	  	assert.doesNotThrowException({oficina.cambiarPrimerRemiseraPor(gabriela)})
+	  	assert.doesNotThrowException({oficina.cambiarPrimerRemiseraPor(lucia)})
+	  }
+	  
+	  test "Invertir las opciones de las remiseras"{
+	  	oficina.asignarRemiseras(roxana,juana)
+	  	oficina.intercambiarRemiseras()
+	  	assert.equals(juana, oficina.primeraRemisera())
+	  	assert.equals(roxana, oficina.segundaRemisera())
+	  
+	  	
+	  }
+	  
+}
+

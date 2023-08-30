@@ -35,3 +35,19 @@ object teresa {
 	 }
 }
 
+
+object melina {
+	var trabajaPara
+	
+	method trabajaPara() = trabajaPara
+	method trabajaPara(cliente){
+		if (self == cliente){
+			self.error("No puede trabajar para si misma")
+		}
+		trabajaPara = cliente
+	}
+	
+	method precioDelKm(){
+		return trabajaPara.precioDelKm() - 3
+	}
+}
